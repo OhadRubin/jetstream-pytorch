@@ -54,7 +54,6 @@ sudo docker run \
     --privileged \
     -e HF_TOKEN="${HF_TOKEN}" \
     -e GLOO_SOCKET_IFNAME=ens8 \
-    -v "${PATH_TO_HF_HOME}:/root/.cache/huggingface" \
     "${ADDITIONAL_ARGS[@]}" \
     "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch  &&  ${RAY_START_CMD}"
 # git clone https://github.com/pytorch/xla.git
@@ -64,4 +63,13 @@ sudo docker run \
 # docker exec -it node /bin/bash
 # export  PT_XLA_DEBUG_LEVEL=2
 # jetstream-pytorch serve meta-llama/Llama-3.1-8B-Instruct  --max-model-len 1024 --max-num-seqs 8  --distributed-executor-backend ray --tensor-parallel-size 4
-# python run_server_with_ray.py --tpu_chips=16 --num_hosts=4 --worker_chips=4 -model_name=$model_name          --size=7b --batch_size=96 --max_cache_length=2048 --quantize_weights=$quantize --quantize_type=$quantize_type --quantize_kv_cache=$quantize --checkpoint_path=$output_ckpt_dir   --tokenizer_path=$tokenizer_path --sharding_config="default_shardings/llama.yaml"
+
+# ray job submit --runtime-env-json='{"working_dir": "."}' -- python run_ray_serve_interleave.py  --tpu_chips=4 --num_hosts=1 --size=7b --model_name=llama-2 --batch_size=32 --max_cache_length=2048 --tokenizer_path=/llama/tokenizer.model --checkpoint_path=/llama/ckpt --quantize_weights=True --quantize_type="int8_per_channel" --quantize_kv_cache=True --sharding_config="default_shardings/llama.yaml"
+
+# cd /jetstream-pytorch
+# export DISABLE_XLA2_PJRT_TEST="true"
+# python3 run_server_with_ray.py --tpu_chips=8 --num_hosts=2 --worker_chips=4 --model_name=llama-3 --size=7b --batch_size=30 --max_cache_length=2048 --sharding_config="default_shardings/llama.yaml"
+
+# --quantize_weights=$quantize --quantize_type=$quantize_type --quantize_kv_cache=$quantize --checkpoint_path=$output_ckpt_dir   --tokenizer_path=$tokenizer_path 
+
+
