@@ -13,6 +13,6 @@ if ! mountpoint -q /mnt/ramdisk; then
 fi
 
 
-huggingface-cli login --token $HF_TOKEN
-huggingface-cli download --repo-type model --local-dir /mnt/ramdisk/$OUTPUT_DIR  $ADDITIONAL_ARGS $MODEL_NAME .
+
+huggingface-cli download --repo-type model --token $HF_TOKEN --local-dir /mnt/ramdisk/$OUTPUT_DIR  $ADDITIONAL_ARGS $MODEL_NAME .
 
