@@ -54,13 +54,14 @@ sudo docker run \
     --privileged \
     -e HF_TOKEN="${HF_TOKEN}" \
     -e GLOO_SOCKET_IFNAME=ens8 \
+    -v /mnt/ramdisk:/mnt/ramdisk \
     "${ADDITIONAL_ARGS[@]}" \
     "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch  &&  ${RAY_START_CMD}"
 # git clone https://github.com/pytorch/xla.git
 
 # use this to get into the container
 # cmd bash /home/ohadr/jetstream-pytorch/examples/run_cluster.sh tpu-vm-base2 35.186.69.167 <hftoken> /dev/shm/huggingface
-# docker exec -it node /bin/bash
+# sudo docker exec -it node /bin/bash
 # export  PT_XLA_DEBUG_LEVEL=2
 # jetstream-pytorch serve meta-llama/Llama-3.1-8B-Instruct  --max-model-len 1024 --max-num-seqs 8  --distributed-executor-backend ray --tensor-parallel-size 4
 
@@ -68,7 +69,7 @@ sudo docker run \
 
 # cd /jetstream-pytorch
 # export DISABLE_XLA2_PJRT_TEST="true"
-# python3 run_server_with_ray.py --tpu_chips=8 --num_hosts=2 --worker_chips=4 --model_name=llama-3 --size=7b --batch_size=30 --max_cache_length=2048 --sharding_config="default_shardings/llama.yaml"
+python3 run_server_with_ray.py --tpu_chips=8 --num_hosts=2 --worker_chips=4 --model_name=llama-3 --size=7b --batch_size=30 --max_cache_length=2048 --sharding_config="default_shardings/llama.yaml"
 
 # --quantize_weights=$quantize --quantize_type=$quantize_type --quantize_kv_cache=$quantize --checkpoint_path=$output_ckpt_dir   --tokenizer_path=$tokenizer_path 
 
