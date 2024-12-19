@@ -13,5 +13,5 @@ if ! mountpoint -q /mnt/ramdisk; then
 fi
 
 
-huggingface-cli download --token $HF_TOKEN --include "*original*" --local-dir /mnt/ramdisk/$OUTPUT_DIR  $ADDITIONAL_ARGS $MODEL_NAME
+huggingface-cli download --token $HF_TOKEN --exclude "*original*" --local-dir /mnt/ramdisk/$OUTPUT_DIR  $ADDITIONAL_ARGS $MODEL_NAME
 

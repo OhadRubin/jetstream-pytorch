@@ -69,7 +69,7 @@ sudo docker run \
 
 # cd /jetstream-pytorch
 # export DISABLE_XLA2_PJRT_TEST="true"
-# python3 run_server_with_ray.py --tpu_chips=8 --num_hosts=2 --worker_chips=4 --model_name=llama-3 --size=7b --batch_size=30 --max_cache_length=2048 --sharding_config="default_shardings/llama.yaml" --tokenizer_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/tokenizer.json --checkpoint_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/ 
+# DISABLE_XLA2_PJRT_TEST="true" python3 run_server_with_ray.py --tpu_chips=8 --num_hosts=2 --worker_chips=4 --model_name=llama-3 --size=7b --batch_size=30 --max_cache_length=2048 --sharding_config="default_shardings/llama.yaml" --tokenizer_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/original/tokenizer.model --checkpoint_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/original/consolidated.00.pth
 
 # --quantize_weights=$quantize --quantize_type=$quantize_type --quantize_kv_cache=$quantize --checkpoint_path=$output_ckpt_dir   --tokenizer_path=$tokenizer_path 
 
