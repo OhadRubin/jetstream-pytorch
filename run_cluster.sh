@@ -65,11 +65,11 @@ sudo docker run \
 # export  PT_XLA_DEBUG_LEVEL=2
 # jetstream-pytorch serve meta-llama/Llama-3.1-8B-Instruct  --max-model-len 1024 --max-num-seqs 8  --distributed-executor-backend ray --tensor-parallel-size 4
 
-# ray job submit --runtime-env-json='{"working_dir": "."}' -- python run_ray_serve_interleave.py  --tpu_chips=4 --num_hosts=1 --size=7b --model_name=llama-2 --batch_size=32 --max_cache_length=2048 --tokenizer_path=/llama/tokenizer.model --checkpoint_path=/llama/ckpt --quantize_weights=True --quantize_type="int8_per_channel" --quantize_kv_cache=True --sharding_config="default_shardings/llama.yaml"
+# ray job submit --runtime-env-json='{"working_dir": "."}' -- python run_ray_serve_interleave.py  --tpu_chips=4 --num_hosts=1 --size=7b --model_name=llama-2 --batch_size=32 --max_cache_length=2048 --tokenizer_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/tokenizer.json --checkpoint_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/ --quantize_weights=True --quantize_type="int8_per_channel" --quantize_kv_cache=True --sharding_config="default_shardings/llama.yaml"
 
 # cd /jetstream-pytorch
 # export DISABLE_XLA2_PJRT_TEST="true"
-python3 run_server_with_ray.py --tpu_chips=8 --num_hosts=2 --worker_chips=4 --model_name=llama-3 --size=7b --batch_size=30 --max_cache_length=2048 --sharding_config="default_shardings/llama.yaml"
+python3 run_server_with_ray.py --tpu_chips=8 --num_hosts=2 --worker_chips=4 --model_name=llama-3 --size=7b --batch_size=30 --max_cache_length=2048 --sharding_config="default_shardings/llama.yaml" --tokenizer_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/tokenizer.json --checkpoint_path=/mnt/ramdisk/Llama-3.1-8B-Instruct/ 
 
 # --quantize_weights=$quantize --quantize_type=$quantize_type --quantize_kv_cache=$quantize --checkpoint_path=$output_ckpt_dir   --tokenizer_path=$tokenizer_path 
 
