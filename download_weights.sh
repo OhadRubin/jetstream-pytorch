@@ -1,7 +1,11 @@
 
 HF_TOKEN="$1"
 MODEL_NAME="$2"
-# meta-llama/Llama-3.1-8B-Instruct
+OUTPUT_DIR="$3"
+shift 3
+ADDITIONAL_ARGS=("$@")
+# usage: ./download_weights.sh <HF_TOKEN> <MODEL_NAME>
+# example: ./download_weights.sh <HF_TOKEN> meta-llama/Llama-3.1-8B-Instruct
 sudo mkdir -p /mnt/ramdisk
 if ! mountpoint -q /mnt/ramdisk; then
   sudo mount -t tmpfs tmpfs /mnt/ramdisk
@@ -10,5 +14,5 @@ fi
 
 
 huggingface-cli login --token $HF_TOKEN
-huggingface-cli download --repo-type model --repo-id $MODEL_NAME --local-dir /mnt/ramdisk/$MODEL_NAME
+huggingface-cli download --repo-type model --local-dir /mnt/ramdisk/$OUTPUT_DIR  $ADDITIONAL_ARGS $MODEL_NAME .
 
