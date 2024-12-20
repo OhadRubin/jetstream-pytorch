@@ -226,11 +226,15 @@ class Transformer(ModuleBase):
     self.n_layers = params.n_layers
 
     Embedding = get_quantized_embedding_layer(env.quant_config)
-    self.tok_embeddings = Embedding(
-        params.vocab_size,
-        params.dim,
-        device=params.device,
-    )
+    try:
+      self.tok_embeddings = Embedding(
+          params.vocab_size,
+          params.dim,
+          device=params.device,
+      )
+    except Exception as e:
+      print(f"Error initializing tok_embeddings: {e}")
+      raise e
 
     self.layers = torch.nn.ModuleList()
     for layer_id in range(params.n_layers):
