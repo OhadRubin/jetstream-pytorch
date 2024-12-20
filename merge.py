@@ -47,7 +47,7 @@ Arguments:
 
 Example:
     # Merge all safetensors files in model_weights folder
-    python merge.py model_weights
+    python3.10 merge.py /mnt/ramdisk/Llama-3.1-8B-Instruct
 """)
 
 if __name__ == '__main__':

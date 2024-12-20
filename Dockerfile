@@ -1,0 +1,1 @@
+FROM us-docker.pkg.dev/cloud-tpu-images/inference/jetstream-pytorch-server:v0.2.4
