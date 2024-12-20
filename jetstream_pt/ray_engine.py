@@ -230,7 +230,7 @@ def create_pytorch_ray_engine(
 ]:
 
   # Return tuple as reponse: issues/107
-  supported_models = ["llama-2", "llama-3", "gemma"]
+  supported_models = ["llama-2", "llama-3", "llama-3.1", "llama-3.2", "gemma"]
   if model_name not in supported_models:
     raise NotImplementedError(
         f"Model name should be one of{','.join(supported_models)}"
