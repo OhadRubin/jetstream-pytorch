@@ -197,6 +197,8 @@ class PyTorchRayWorker:
       env_data.model_type = "llama-2-" + param_size
       env_data.num_layers = args.n_layers
       env = JetEngineEnvironment(env_data)
+      print(f"env: {env}")
+      print(f"args: {args}")
       pt_model = model_exportable.Transformer(args, env)
     elif model_name == "gemma":
       args = gemma_config.get_model_config(param_size)
