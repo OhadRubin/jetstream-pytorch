@@ -39,7 +39,7 @@ cleanup() {
 trap cleanup EXIT
 
 # Command setup for head or worker node
-RAY_START_CMD="ray start --block --num-cpus=220 --resources='{\"TPU\": 4}'"
+RAY_START_CMD="JAX_PLATFORMS=cpu ray start --block --num-cpus=220 --resources='{\"TPU\": 4}'"
 if [ "${CURRENT_IP}" == "${HEAD_NODE_ADDRESS}" ]; then
     RAY_START_CMD+=" --head --port=6379"
 else
