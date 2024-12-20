@@ -921,15 +921,15 @@ class PyTorchRayWorker:
       for key, model_weights in self.pt_model.state_dict().items():
         if key == "freqs_cis":
           continue
-        js_key = map_js_to_safetensors_weight_name(key)
+        st_key = map_js_to_safetensors_weight_name(key)
         
-        tensor = f.get_tensor(js_key)
-        arr = self._weight_sharding(tensor, self.sharding_by_name(js_key))
+        tensor = f.get_tensor(st_key)
+        arr = self._weight_sharding(tensor, self.sharding_by_name(key))
 
         assert tuple(model_weights.shape) == tuple(
             arr.shape
-        ), f"key: {js_key} error: {model_weights.shape} != {arr.shape}"
-        weights[js_key] = arr
+        ), f"key: {key} error: {model_weights.shape} != {arr.shape}"
+        weights[key] = arr
 
     freqs_cis = torch_xla2.tensor.t2j(self.pt_model.freqs_cis)
     weights["freqs_cis"] = self._weight_sharding(freqs_cis, self.replicated)
