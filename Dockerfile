@@ -9,6 +9,6 @@ RUN git config --global --add safe.directory /jetstream-pytorch && \
     git checkout main && \
     git branch --set-upstream-to=origin/main main && \
     git pull
-RUN python3 -m pip install watchfiles
+RUN python3 -m pip install watchfiles fire
 # Keep the original entrypoint
 
