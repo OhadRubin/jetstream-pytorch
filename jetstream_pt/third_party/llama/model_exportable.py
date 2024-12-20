@@ -152,6 +152,7 @@ class TransformerBlock(ModuleBase):
       ragged_block_index=None,
   ):
     with jax.named_scope("Attention"):
+      print("x", x.shape)
       attn = self.attention.forward(
           self.attention_norm(x),
           freqs_cis,
