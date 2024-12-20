@@ -51,6 +51,7 @@ PrefillInputs = np.ndarray
 import re
 from dataclasses import dataclass
 
+
 def _hf_mapping(layer_idx: int = -1, expert_idx: int = -1) -> dict:
   # pylint: disable=line-too-long
   return {
@@ -74,30 +75,18 @@ def _hf_mapping(layer_idx: int = -1, expert_idx: int = -1) -> dict:
       f"layers.{layer_idx}.feed_forward.w3.weight": f"model.layers.{layer_idx}.mlp.up_proj.weight",
   }
 
-
-@dataclass
-class _HFNamespaceMapper:
-  """A class to dynamically map Mistral/Llama weight names to Huggingface weights
-  if the checkpoint is from HF.
-  """
-
-  collection: dict
-  delimiter: str = "."
-
-  def __getitem__(self, key):
-    if key in self.collection:
-      return self.collection[key]  # original key takes precedence
-    fields = key.split(self.delimiter)
+def get_js_mapping(key):
+    fields = key.split(".")
     num_fields = [int(field) for field in fields if re.match(r"[0-9]+", field) is not None]
     mapping = _hf_mapping(*num_fields)
+    return mapping
+
+def map_js_to_safetensors_weight_name(key: str) -> str:
+    mapping = get_js_mapping(key)
     if key not in mapping:
-      raise ValueError(f"Key `{key}` is missing from the original collection and from the mapping.")
-    new_key = mapping[key]
-    if new_key not in self.collection:
-      raise ValueError(f"New key `{new_key}` mapped from `{key}` is missing from the collection.")
-    return self.collection[new_key]
-
-
+      raise ValueError(f"Key `{key}` is missing from the mapping.")
+    return mapping[key]
+  
 
 @struct.dataclass
 # pylint: disable-next=all
@@ -924,15 +913,17 @@ class PyTorchRayWorker:
     # chkpt_vars = [_HFNamespaceMapper(var) for var in chkpt_vars]
     # pylint: disable-next=all
     with safetensors.safe_open(path, framework="flax", device="cpu") as f:
-      for key in self.pt_model.state_dict().keys():
-        print(f"jetstream_pt key: {key}")
-      for key in f.keys():
-        print(f"safetensors key: {key}")
+      # for key in self.pt_model.state_dict().keys():
+      #   print(f"jetstream_pt key: {key}")
+      # for key in f.keys():
+      #   print(f"safetensors key: {key}")
       
       for key, model_weights in self.pt_model.state_dict().items():
         if key == "freqs_cis":
           continue
-        tensor = f.get_tensor(key)
+        js_key = map_js_to_safetensors_weight_name(key)
+        
+        tensor = f.get_tensor(js_key)
         arr = self._weight_sharding(tensor, self.sharding_by_name(key))
 
         assert tuple(model_weights.shape) == tuple(
