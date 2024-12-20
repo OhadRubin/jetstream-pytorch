@@ -873,10 +873,9 @@ class PyTorchRayWorker:
 
     weights = {}
     # pylint: disable-next=all
-    print(self.pt_model.state_dict().keys())
     with safetensors.safe_open(path, framework="flax", device="cpu") as f:
-      print(f.keys())
-    with safetensors.safe_open(path, framework="flax", device="cpu") as f:
+      for key in self.pt_model.state_dict().keys():
+        print(f"key: {key}")
       for key in f.keys():
         print(f"key: {key}")
       
