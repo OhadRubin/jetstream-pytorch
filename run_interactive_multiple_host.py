@@ -17,6 +17,7 @@ import random
 import time
 from typing import List
 
+import torch_xla2
 import jax
 from absl import app, flags
 from jetstream.engine import token_utils
