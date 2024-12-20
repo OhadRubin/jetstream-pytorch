@@ -10,7 +10,8 @@ RUN git config --global --add safe.directory /jetstream-pytorch && \
     git branch --set-upstream-to=origin/main main && \
     git pull
 RUN python3 -m pip install watchfiles fire
-RUN python3 -m pip install jax==0.4.34 jaxlib==0.4.34 libtpu-nightly==0.1.dev20241008+nightly -f https://storage.googleapis.com/libtpu-releases/index.html
+RUN python3 -m pip install jax==0.4.33 jaxlib==0.4.33 libtpu-nightly==0.1.dev20241008+nightly -f https://storage.googleapis.com/libtpu-releases/index.html
+
 
 # Keep the original entrypoint
 
