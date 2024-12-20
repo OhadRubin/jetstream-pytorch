@@ -15,7 +15,7 @@ request = jetstream_pb2.DecodeRequest(
     text_content=jetstream_pb2.DecodeRequest.TextContent(
         text=prompt
     ),
-    priority=0,
+    # priority=0,
     max_tokens=2000,
 )
 
