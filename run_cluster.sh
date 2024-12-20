@@ -64,7 +64,7 @@ sudo docker run \
     -e GLOO_SOCKET_IFNAME=ens8 \
     -v /mnt/ramdisk:/mnt/ramdisk \
     "${ADDITIONAL_ARGS[@]}" \
-    "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch && ${RAY_START_CMD}"
+    "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch && git fetch && git pull && ${RAY_START_CMD}"
     # "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch && git config --global --add safe.directory /jetstream-pytorch  && git checkout main && git pull && git checkout bb174b62aad27a90f71ddea6d5fa0312e064bc50 &&  ${RAY_START_CMD}"
 
 
