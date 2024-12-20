@@ -73,9 +73,9 @@ def main(argv):
   print("Load params ", time.perf_counter() - start)
 
   metadata = engine.get_tokenizer()
-  vocab = engine.build_tokenizer(metadata)
+  tokenizer = engine.build_tokenizer(metadata)
   # vocab = token_utils.load_vocab(metadata.path, metadata.extra_ids)
-  stop_tokens = [vocab.eos_id, vocab.pad_id]
+  stop_tokens = [tokenizer.eos_id, tokenizer.pad_id]
   max_output_length = 1024
 
   profiling_output = FLAGS.profiling_output
@@ -96,9 +96,7 @@ def main(argv):
   ]
   for prompt in prompts:
     slot = random.randint(0, FLAGS.batch_size - 1)
-    tokens, true_length = token_utils.tokenize_and_pad(
-        prompt, vocab, is_bos=True, jax_padding=False
-    )
+    tokens, true_length = tokenizer.encode(prompt, is_bos=True, jax_padding=False)
     print(f"---- Input prompts are: {prompt}")
     print(f"---- Encoded tokens are: {tokens}")
 
@@ -127,7 +125,7 @@ def main(argv):
     print("---- All output tokens.")
     print(sampled_tokens_list)
     print("---- All output text.")
-    print(vocab.tokenizer.decode(sampled_tokens_list))
+    print(tokenizer.decode(sampled_tokens_list))
 
   if profiling_output:
     jax.profiler.stop_trace()
