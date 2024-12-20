@@ -73,7 +73,8 @@ def main(argv):
   print("Load params ", time.perf_counter() - start)
 
   metadata = engine.get_tokenizer()
-  vocab = token_utils.load_vocab(metadata.path, metadata.extra_ids)
+  vocab = engine.build_tokenizer(metadata)
+  # vocab = token_utils.load_vocab(metadata.path, metadata.extra_ids)
   stop_tokens = [vocab.eos_id, vocab.pad_id]
   max_output_length = 1024
 
