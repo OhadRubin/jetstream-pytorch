@@ -873,7 +873,9 @@ class PyTorchRayWorker:
 
     weights = {}
     # pylint: disable-next=all
+    print(self.pt_model.state_dict().keys())
     with safetensors.safe_open(path, framework="flax", device="cpu") as f:
+      
       for key, model_weights in self.pt_model.state_dict().items():
         if key == "freqs_cis":
           continue
