@@ -47,6 +47,7 @@ else
 fi
 
 # cmd sudo docker build -t tpu-vm-base2 -f Dockerfile.tpu .
+# sudo docker build -t ohadr_jetstream-pytorch-cluster .
 # Run the docker command with the user specified parameters and additional arguments
 
 # docker run -v $(pwd):/workspace/jetstream-pytorch -it your-image-name
@@ -63,9 +64,10 @@ sudo docker run \
     -e GLOO_SOCKET_IFNAME=ens8 \
     -v /mnt/ramdisk:/mnt/ramdisk \
     "${ADDITIONAL_ARGS[@]}" \
-    "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch && git config --global --add safe.directory /jetstream-pytorch  && git checkout main && git pull && git checkout bb174b62aad27a90f71ddea6d5fa0312e064bc50 &&  ${RAY_START_CMD}"
+    "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch && ${RAY_START_CMD}"
+    # "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch && git config --global --add safe.directory /jetstream-pytorch  && git checkout main && git pull && git checkout bb174b62aad27a90f71ddea6d5fa0312e064bc50 &&  ${RAY_START_CMD}"
 
-    
+
     # "${DOCKER_IMAGE}" -c "cd /jetstream-pytorch  &&  ${RAY_START_CMD}"
 
 
