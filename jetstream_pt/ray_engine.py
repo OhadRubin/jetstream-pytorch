@@ -7,8 +7,9 @@ import ray
 from ray.runtime_env import RuntimeEnv
 from ray.util.accelerators import tpu
 
-from jetstream.engine import engine_api, tokenizer_pb2
+from jetstream.engine import engine_api, tokenizer_pb2, tokenizer_api
 from jetstream_pt.ray_worker import PyTorchRayWorker
+
 
 Params = Any
 Prefix = Any
@@ -200,7 +201,17 @@ class PyTorchRayEngine(engine_api.Engine):
   def mesh(self):
     "No implementation"
     return None
+  
 
+  def build_tokenizer(
+      self, metadata: tokenizer_pb2.TokenizerParameters  # pylint: disable=all
+  ) -> tokenizer_api.Tokenizer:
+    if self.env.hf_tokenizer is not None:
+      return HFTokenizerAdapter(self.env.hf_tokenizer)
+    if "llama-3" in self.env.model_type:
+      return token_utils.TikToken(metadata)
+
+    return token_utils.SentencePieceTokenizer(metadata)
 
 # pylint: disable-next=all
 def create_pytorch_ray_engine(
