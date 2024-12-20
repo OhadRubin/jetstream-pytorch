@@ -921,7 +921,7 @@ class PyTorchRayWorker:
   def _load_from_safetensors(self, path):
 
     weights = {}
-    chkpt_vars = [_HFNamespaceMapper(var) for var in chkpt_vars]
+    # chkpt_vars = [_HFNamespaceMapper(var) for var in chkpt_vars]
     # pylint: disable-next=all
     with safetensors.safe_open(path, framework="flax", device="cpu") as f:
       for key in self.pt_model.state_dict().keys():
