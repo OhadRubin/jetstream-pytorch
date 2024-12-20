@@ -3,9 +3,12 @@ FROM us-docker.pkg.dev/cloud-tpu-images/inference/jetstream-pytorch-server:v0.2.
 # Set up the repository at build time instead of runtime
 WORKDIR /jetstream-pytorch
 RUN git config --global --add safe.directory /jetstream-pytorch && \
+    git remote remove origin && \
+    git remote add origin https://github.com/OhadRubin/jetstream-pytorch.git && \
     git fetch && \
-    git checkout bb174b62aad27a90f71ddea6d5fa0312e064bc50
+    git checkout main && \
+    git branch --set-upstream-to=origin/main main && \
+    git pull
 
 # Keep the original entrypoint
 
-git remote add origin https://github.com/OhadRubin/jetstream-pytorch.git
