@@ -206,7 +206,7 @@ class PyTorchRayEngine(engine_api.Engine):
   def build_tokenizer(
       self, metadata: tokenizer_pb2.TokenizerParameters  # pylint: disable=all
   ) -> tokenizer_api.Tokenizer:
-    if "llama-3" in self.tokenizer_path or "llama3" in self.tokenizer_path:
+    if "llama-3" in self.tokenizer_path.lower() or "llama3" in self.tokenizer_path.lower():
       return token_utils.TikToken(metadata)
 
     return token_utils.SentencePieceTokenizer(metadata)
